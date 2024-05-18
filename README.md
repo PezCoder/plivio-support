@@ -1,5 +1,13 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Demo Videos
+- Product demo - https://youtu.be/_-yCWKrZxPA
+- Code walkthrough - https://youtu.be/vjm3GcQHeZg
+
+## Tech stack
+- Storage library - https://github.com/localForage/localForage
+- Component library - https://ui.shadcn.com/
+
 ## Getting Started
 
 First, run the development server:
