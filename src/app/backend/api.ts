@@ -75,12 +75,21 @@ export type ConversationWithUser = Pick<Conversation, 'id' | 'createdAt' | 'upda
     user: User,
     last_message?: string,
 }
-export const getConversations = async () => {
+
+export type ConversationFilters = {
+    statuses: ConversationStatusType[]
+}
+export const getConversations = async (filter?: ConversationFilters) => {
     const dbValue = await localforage.getItem('conversations') as Conversation[];
-    const conversations = dbValue ?? [];
+    let conversations = dbValue ?? [];
+
+    const hasStatusFilter = filter?.statuses && filter?.statuses.length > 0;
+    let filteredConversations = hasStatusFilter ? conversations.filter(
+        conversation => filter.statuses.includes(conversation.status),
+    ) : conversations;
 
     let result: ConversationWithUser[] = [];
-    for (let key in conversations) {
+    for (let key in filteredConversations) {
         const {user_id, messages, ...rest} = conversations[key];
         const user = await getUserById(user_id);
         result.push({

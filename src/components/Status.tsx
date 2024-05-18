@@ -9,11 +9,9 @@ const statusStyles = {
 } as const;
 
 const Status = ({ value }: {value: Conversation['status']}) => {
-  const statusText = value;
-
   return (
     <Badge variant={statusStyles[value]}>
-      {statusText}
+      {value}
     </Badge>
   );
 };

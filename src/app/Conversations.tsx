@@ -6,16 +6,22 @@ import {getConversationDetailURL} from "../utils/routes";
 import {Conversations} from "../components/Conversations/Conversations";
 import {useConversations} from "../components/Conversations/useConversations";
 import {ShowingResults} from "../components/ShowingResults";
+import {StatusFilter} from "../components/StatusFilter";
+import {ConversationStatusType} from "./backend/types";
 
 export const ConversationsPage = () => {
   const router = useRouter();
   const goToConversationDetail = (id: string) => router.push(getConversationDetailURL(id));
-  const { conversations } = useConversations();
+  const { conversations, refetch } = useConversations();
+
+  const handleStatusChange = async (newStatuses: ConversationStatusType[]) => {
+    await refetch({ statuses: newStatuses })
+  };
 
   return (
     <ConversationsStyled>
       <NewConversation onCreate={goToConversationDetail} />
-
+      <StatusFilter onStatusChange={handleStatusChange} />
       {conversations && conversations.length > 0 ? 
         <>
           <ShowingResults count={conversations.length} label="Conversation" />
