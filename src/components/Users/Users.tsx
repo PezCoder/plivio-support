@@ -1,7 +1,6 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -13,16 +12,20 @@ import {User} from "../../app/backend/types";
 import {Loader2} from 'lucide-react';
 import {formatDate} from "../../utils/dateUtils";
 import {UsersContainer} from "./Users.styles";
-import {Button} from "../ui/button";
+import {NewUser} from "./NewUser";
 
 
 export const Users = () => {
   const [users, setUsers] = useState<User[] | null>(null);
 
+  const fetchUsers = async () => {
+    const response = await getUsers();
+    setUsers(response);
+  };
+
   useEffect(() => {
     (async () => {
-      const response = await getUsers();
-      setUsers(response);
+      await fetchUsers();
     })();
   }, []);
 
@@ -32,12 +35,11 @@ export const Users = () => {
 
   return (
     <UsersContainer>
-      <Button>Add User</Button>
+      <NewUser onAdd={() => fetchUsers()} />
       <Table>
-        <TableCaption>Users</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">ID</TableHead>
+            <TableHead className="w-[200px]">ID</TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Created at</TableHead>
           </TableRow>
