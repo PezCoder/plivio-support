@@ -1,8 +1,8 @@
 "use client";
-import {Plivio} from "./Plivio";
+import {Conversations} from "./Conversations";
 
 export default function Home() {
   return (
-      <Plivio />
+      <Conversations />
   );
 }
