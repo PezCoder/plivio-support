@@ -2,33 +2,48 @@ import {ConversationById} from "../../app/backend/api";
 import {Avatar, AvatarImage, AvatarFallback} from "../ui/avatar";
 import {Card, CardHeader, CardTitle, CardContent, CardFooter} from "../ui/card";
 import {formatDate} from "../../utils/dateUtils";
+import {NewConversationMessage} from "./NewConversationMessage";
+import {useConversationById} from "./useConversationById";
+import {Spinner} from "../Spinner";
+import {useEffect, useRef} from "react";
 
-export const ConversationDetail = ({ conversation }: { conversation: ConversationById }) => {
-     return <div className="container mx-auto mt-8">
+export const ConversationDetail = ({ id }: { id: string }) => {
+  const {conversation, refetch} = useConversationById(id);
+  const cardContentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (cardContentRef.current) {
+      cardContentRef.current.scrollTop = cardContentRef.current.scrollHeight;
+    }
+  }, [conversation?.messages]);
+
+  if (!conversation) {
+    return <Spinner />
+  }
+
+  return <div className="container mx-auto mt-8">
     <Card>
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <Avatar>
-              <AvatarImage />
-              <AvatarFallback>{conversation.user.name.substring(0, 2)}</AvatarFallback>
-            </Avatar>
+      <CardHeader className="flex items-center justify-between p-4 border-b-2 border-gray-100">
+        <div className="flex items-center space-x-4">
+          <Avatar>
+            <AvatarImage />
+            <AvatarFallback>{conversation.user.name.substring(0, 2)}</AvatarFallback>
+          </Avatar>
 
-            <div>
-              <CardTitle>{conversation.user.name}</CardTitle>
-            </div>
+          <div>
+            <CardTitle>{conversation.user.name}</CardTitle>
           </div>
-          {/*
-          <Badge variant={conversation.status === 'open' ? 'secondary' : 'default'}>
-            {conversation.status}
-          </Badge>
-          */}
         </div>
+
+        {/* (Optional) Badge for conversation status */}
+        {/* <Badge variant={conversation.status === 'open' ? 'secondary' : 'default'}>
+    {conversation.status}
+  </Badge> */}
       </CardHeader>
 
-      <CardContent>
+      <CardContent  ref={cardContentRef} className="space-y-4 max-h-[400px] overflow-y-auto">
         {conversation.messages.map((message) => (
-          <Card key={message.id} className="mb-4"> 
+          <Card key={message.id} className="mt-4 mb-4"> 
             <CardContent className="space-y-2 p-6">
               <p className="text-sm text-gray-600">
                 {message.text}
@@ -44,8 +59,9 @@ export const ConversationDetail = ({ conversation }: { conversation: Conversatio
         ))}
       </CardContent>
 
-      <CardFooter>
+      <CardFooter className="flex items-center border-t-2 border-gray-100 p-4">
+        <NewConversationMessage conversationId={id} onMessage={refetch} />
       </CardFooter>
     </Card>
-    </div>
+  </div>
 };

@@ -11,6 +11,7 @@ import {UsersContainer} from "./Users.styles";
 import {NewUser} from "./NewUser";
 import {Spinner} from "../Spinner";
 import {useUsers} from "./useUsers";
+import {ShowingResults} from "../ShowingResults";
 
 
 export const Users = () => {
@@ -23,6 +24,9 @@ export const Users = () => {
   return (
     <UsersContainer>
       <NewUser onAdd={refetch} />
+      {users.length > 0 ? 
+        <>
+        <ShowingResults count={users.length} label="User" />
       <Table>
         <TableHeader>
           <TableRow>
@@ -40,6 +44,8 @@ export const Users = () => {
           )}
         </TableBody>
       </Table>
+      </>
+        : <p>No users</p>}
     </UsersContainer>
   )
 

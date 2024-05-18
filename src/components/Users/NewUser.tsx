@@ -58,9 +58,6 @@ export function NewUser({ onAdd }: NewUserProps) {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Add User</DialogTitle>
-          <DialogDescription>
-            description dialog
-          </DialogDescription>
         </DialogHeader>
 
         {/* https://ui.shadcn.com/docs/components/form */}

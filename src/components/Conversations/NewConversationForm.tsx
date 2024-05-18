@@ -30,8 +30,8 @@ import {startConversation} from "../../app/backend/api";
 import {Spinner} from "../Spinner";
 
 const formSchema = z.object({
-  userId: z.string({
-    required_error: "Please select a user.",
+  userId: z.string().nonempty({
+    message: "Please select a user.",
   }),
 });
 

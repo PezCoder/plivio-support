@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import {getConversationDetailURL} from "../utils/routes";
 import {Conversations} from "../components/Conversations/Conversations";
 import {useConversations} from "../components/Conversations/useConversations";
+import {ShowingResults} from "../components/ShowingResults";
 
 export const ConversationsPage = () => {
   const router = useRouter();
@@ -14,7 +15,13 @@ export const ConversationsPage = () => {
   return (
     <ConversationsStyled>
       <NewConversation onCreate={goToConversationDetail} />
-      <Conversations conversations={conversations} onRowClick={goToConversationDetail} />
+
+      {conversations && conversations.length > 0 ? 
+        <>
+          <ShowingResults count={conversations.length} label="Conversation" />
+          <Conversations conversations={conversations} onRowClick={goToConversationDetail} /> 
+        </>
+        : <p>No Conversations</p>}
     </ConversationsStyled>
   );
 
