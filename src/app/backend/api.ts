@@ -20,15 +20,18 @@ export const startConversation = async (userId: string) => {
     const conversations = dbValue ?? [];
 
     const nowTime = getCurrentDateTimeString();
-    conversations.push({
+    const newConversation: Conversation = {
         id: v4(),
         createdAt: nowTime,
         updatedAt: nowTime,
         user_id: userId,
         messages: []
-    });
+    };
+    conversations.push(newConversation);
 
-    return await localforage.setItem('conversations', conversations);
+    await localforage.setItem('conversations', conversations);
+
+    return newConversation;
 };
 
 // TODO: Potential to normalise this data further into "messages" with
