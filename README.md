@@ -1,4 +1,5 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Try here
+https://plivio-pezcoders-projects.vercel.app/
 
 ## Demo Videos
 - Product demo - https://youtu.be/_-yCWKrZxPA
@@ -9,6 +10,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 - Component library - https://ui.shadcn.com/
 
 ## Getting Started
+
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 First, run the development server:
 
