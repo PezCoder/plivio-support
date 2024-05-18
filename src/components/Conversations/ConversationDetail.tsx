@@ -1,4 +1,4 @@
-import {ConversationById} from "../../app/backend/api";
+import {ConversationById, updateConversationStatus} from "../../app/backend/api";
 import {Avatar, AvatarImage, AvatarFallback} from "../ui/avatar";
 import {Card, CardHeader, CardTitle, CardContent, CardFooter} from "../ui/card";
 import {formatDate} from "../../utils/dateUtils";
@@ -7,6 +7,7 @@ import {useConversationById} from "./useConversationById";
 import {Spinner} from "../Spinner";
 import {useEffect, useRef} from "react";
 import {ConversationStatus} from "../../app/backend/types";
+import {ConversationStatusSelect} from "./ConversationStatusSelect";
 
 export const ConversationDetail = ({ id }: { id: string }) => {
   const {conversation, refetch} = useConversationById(id);
@@ -34,15 +35,17 @@ export const ConversationDetail = ({ id }: { id: string }) => {
           <div>
             <CardTitle>{conversation.user.name}</CardTitle>
           </div>
-        </div>
 
-        {/* (Optional) Badge for conversation status */}
-        {/* <Badge variant={conversation.status === 'open' ? 'secondary' : 'default'}>
-    {conversation.status}
-  </Badge> */}
+          <ConversationStatusSelect value={conversation.status} onChange={
+            async (value) => {
+              await updateConversationStatus(conversation.id, value)
+              refetch();
+            }
+          } />
+        </div>
       </CardHeader>
 
-      <CardContent  ref={cardContentRef} className="space-y-4 max-h-[400px] overflow-y-auto">
+      <CardContent  ref={cardContentRef} className="space-y-4 min-h-[400px] max-h-[400px] overflow-y-auto">
         {conversation.messages.map((message) => (
           <Card key={message.id} className="mt-4 mb-4"> 
             <CardContent className="space-y-2 p-6">

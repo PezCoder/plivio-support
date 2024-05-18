@@ -1,5 +1,5 @@
 import localforage from "localforage";
-import {Conversation, ConversationStatus, User} from "./types";
+import {Conversation, ConversationStatus, ConversationStatusType, User} from "./types";
 import {v4} from "uuid";
 import {byDate, byValue} from 'sort-es'
 import {getCurrentDateTimeString} from "../../utils/dateUtils";
@@ -52,6 +52,24 @@ export const addMessageToConversation = async (id: string, message: string) => {
 
     return await localforage.setItem('conversations', newConversations);
 };
+
+export const updateConversationStatus = async (id: string, status: ConversationStatusType) => {
+    const dbValue = await localforage.getItem('conversations') as Conversation[];
+    const conversations = dbValue ?? [];
+    const nowTime = getCurrentDateTimeString();
+
+    const updatedConversations = conversations.map(
+        conversation => conversation.id === id ? ({
+            ...conversation,
+            status,
+            // Conversation updatedAt updates on status change
+            updatedAt: nowTime,
+        }) : conversation
+    );
+
+    return await localforage.setItem('conversations', updatedConversations);
+};
+
 
 export type ConversationWithUser = Pick<Conversation, 'id' | 'createdAt' | 'updatedAt' | 'status'> & {
     user: User,
