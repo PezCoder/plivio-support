@@ -45,6 +45,7 @@ export const addMessageToConversation = async (id: string, message: string) => {
         conversation => conversation.id === id ? ({
             ...conversation,
             messages: conversation.messages.concat({
+                id: v4(),
                 createdAt: nowTime,
                 updatedAt: nowTime,
                 text: message,
@@ -77,6 +78,28 @@ export const getConversations = async () => {
     }
 
     return result;
+};
+
+export type ConversationById = Conversation & {
+    user: User,
+}
+export const getConversationById = async (id: string) => {
+    const dbValue = await localforage.getItem('conversations') as Conversation[];
+    const conversations = dbValue ?? [];
+
+    const conversation = conversations.find(conversation => conversation.id === id);
+    if (!conversation) {
+        throw new Error('conversation not found!');
+    }
+
+    const user = await getUserById(conversation?.user_id);
+    let conversationById: ConversationById = {
+        ...conversation,
+        user,
+        messages: conversation.messages,
+    };
+
+    return conversationById;
 };
 
 export const createUser = async (user: Pick<User, 'name'>) => {
