@@ -6,6 +6,7 @@ import {NewConversationMessage} from "./NewConversationMessage";
 import {useConversationById} from "./useConversationById";
 import {Spinner} from "../Spinner";
 import {useEffect, useRef} from "react";
+import {ConversationStatus} from "../../app/backend/types";
 
 export const ConversationDetail = ({ id }: { id: string }) => {
   const {conversation, refetch} = useConversationById(id);
@@ -59,9 +60,9 @@ export const ConversationDetail = ({ id }: { id: string }) => {
         ))}
       </CardContent>
 
-      <CardFooter className="flex items-center border-t-2 border-gray-100 p-4">
+      { conversation.status !== ConversationStatus.CLOSED && <CardFooter className="flex items-center border-t-2 border-gray-100 p-4">
         <NewConversationMessage conversationId={id} onMessage={refetch} />
-      </CardFooter>
+      </CardFooter>}
     </Card>
   </div>
 };

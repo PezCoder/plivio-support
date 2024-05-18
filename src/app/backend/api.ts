@@ -1,5 +1,5 @@
 import localforage from "localforage";
-import {Conversation, User} from "./types";
+import {Conversation, ConversationStatus, User} from "./types";
 import {v4} from "uuid";
 import {byDate, byValue} from 'sort-es'
 import {getCurrentDateTimeString} from "../../utils/dateUtils";
@@ -8,12 +8,6 @@ localforage.config({
     storeName: 'plivio-support',
     description: 'stores data for plivio support like users & conversations'
 });
-
-// Add Conversation
-// Select user - name
-// text
-// Status - 'open', 'pending', 'closed'
-// <input>, status dropdown
 
 export const startConversation = async (userId: string) => {
     const dbValue = await localforage.getItem('conversations') as Conversation[];
@@ -25,7 +19,8 @@ export const startConversation = async (userId: string) => {
         createdAt: nowTime,
         updatedAt: nowTime,
         user_id: userId,
-        messages: []
+        messages: [],
+        status: ConversationStatus.OPEN,
     };
     conversations.push(newConversation);
 
@@ -58,7 +53,7 @@ export const addMessageToConversation = async (id: string, message: string) => {
     return await localforage.setItem('conversations', newConversations);
 };
 
-export type ConversationWithUser = Pick<Conversation, 'id' | 'createdAt' | 'updatedAt'> & {
+export type ConversationWithUser = Pick<Conversation, 'id' | 'createdAt' | 'updatedAt' | 'status'> & {
     user: User,
     last_message?: string,
 }

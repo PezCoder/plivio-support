@@ -6,6 +6,7 @@ import {formatDate} from "../../utils/dateUtils";
 import {Badge} from "@/components/ui/badge";
 import {useConversations} from "./useConversations";
 import {ConversationWithUser} from "../../app/backend/api";
+import Status from "../Status";
 
 type ConversationsProps = {
   conversations: ConversationWithUser[] | null;
@@ -60,9 +61,7 @@ export const Conversations = ({ conversations, onRowClick }: ConversationsProps)
                       {conversation.user.name}
                     </TableCell>
                     <TableCell>
-                      <Badge className="text-xs" variant="secondary">
-                        Fulfilled
-                      </Badge>
+                      <Status value={conversation.status} />
                     </TableCell>
                     <TableCell>
                       {formatDate(conversation.createdAt)}

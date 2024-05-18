@@ -4,6 +4,15 @@ export type User = {
     createdAt: string
 }
 
+
+export const ConversationStatus = {
+    OPEN: 'OPEN',
+    PENDING: 'PENDING',
+    CLOSED: 'CLOSED',
+} as const;
+export type ConversationStatusType = typeof ConversationStatus[keyof typeof ConversationStatus];
+
+
 export type ConversationMessage = {
     id: string;
     text: string;
@@ -17,4 +26,5 @@ export type Conversation = {
     messages: ConversationMessage[]
     createdAt: string,
     updatedAt: string,
+    status: ConversationStatusType,
 }
