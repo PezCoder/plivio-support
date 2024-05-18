@@ -57,6 +57,28 @@ export const addMessageToConversation = async (id: string, message: string) => {
     return await localforage.setItem('conversations', newConversations);
 };
 
+export type ConversationWithUser = Pick<Conversation, 'id' | 'createdAt' | 'updatedAt'> & {
+    user: User,
+    last_message?: string,
+}
+export const getConversations = async () => {
+    const dbValue = await localforage.getItem('conversations') as Conversation[];
+    const conversations = dbValue ?? [];
+
+    let result: ConversationWithUser[] = [];
+    for (let key in conversations) {
+        const {user_id, messages, ...rest} = conversations[key];
+        const user = await getUserById(user_id);
+        result.push({
+            ...rest,
+            user,
+            last_message: messages[messages.length-1]?.text
+        });
+    }
+
+    return result;
+};
+
 export const createUser = async (user: Pick<User, 'name'>) => {
     const dbValue = await localforage.getItem('users') as User[];
     const users = dbValue ?? [];
@@ -78,4 +100,16 @@ export const getUsers = async () => {
         i => i.createdAt,
         byDate({desc: true})
     ));
+};
+
+export const getUserById = async (id: string) => {
+    const dbValue = await localforage.getItem('users') as User[];
+    const users = dbValue ?? [];
+
+    const user = users.find(user => user.id === id);
+    if (!user) {
+        throw new Error('user not found!');
+    }
+
+    return user;
 };

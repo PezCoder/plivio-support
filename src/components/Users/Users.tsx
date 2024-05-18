@@ -6,36 +6,23 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import {useEffect, useState} from "react";
-import {getUsers} from "../../app/backend/api";
-import {User} from "../../app/backend/types";
-import {Loader2} from 'lucide-react';
 import {formatDate} from "../../utils/dateUtils";
 import {UsersContainer} from "./Users.styles";
 import {NewUser} from "./NewUser";
+import {Spinner} from "../Spinner";
+import {useUsers} from "./useUsers";
 
 
 export const Users = () => {
-  const [users, setUsers] = useState<User[] | null>(null);
-
-  const fetchUsers = async () => {
-    const response = await getUsers();
-    setUsers(response);
-  };
-
-  useEffect(() => {
-    (async () => {
-      await fetchUsers();
-    })();
-  }, []);
+  const {users, refetch} = useUsers();
 
   if (!users) {
-    return <Loader2 className="h-10 w-10 animate-spin self-center"  />
+    return <Spinner />
   }
 
   return (
     <UsersContainer>
-      <NewUser onAdd={() => fetchUsers()} />
+      <NewUser onAdd={refetch} />
       <Table>
         <TableHeader>
           <TableRow>

@@ -79,11 +79,11 @@ export function NewUser({ onAdd }: NewUserProps) {
                 </FormItem>
               )}
             />
+            <DialogFooter>
+              <Button type="submit">Save changes</Button>
+            </DialogFooter>
           </form>
         </Form>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   )

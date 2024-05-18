@@ -2,5 +2,7 @@ import styled from "styled-components";
 
 export const ConversationsStyled = styled.div({
     display: 'flex',
-    alignItems: 'flex-start'
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: '20px',
 });

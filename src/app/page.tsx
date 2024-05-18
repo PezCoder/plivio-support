@@ -1,8 +1,8 @@
 "use client";
-import {Conversations} from "./Conversations";
+import {ConversationsPage} from "./Conversations";
 
 export default function Home() {
   return (
-      <Conversations />
+      <ConversationsPage />
   );
 }
