@@ -90,7 +90,7 @@ export const getConversations = async (filter?: ConversationFilters) => {
 
     let result: ConversationWithUser[] = [];
     for (let key in filteredConversations) {
-        const {user_id, messages, ...rest} = conversations[key];
+        const {user_id, messages, ...rest} = filteredConversations[key];
         const user = await getUserById(user_id);
         result.push({
             ...rest,
